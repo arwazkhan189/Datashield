@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DataShield – KMT Anonymity App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Upload CSV for (k, m, t)-Anonymity</h2>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data"
+            onsubmit="handleFormSubmit(event)">
+            <label for="file">Select CSV File:</label>
+            <input type="file" name="file" id="fileInput" required>
+
+            <button type="button" onclick="previewHeaders()">Preview Columns</button>
+
+            <div id="columnsPreview" style="margin-top: 10px;"></div>
+
+            <label for="k_value">Enter k-value:</label>
+            <input type="number" name="k_value" min="1" required>
+
+            <label for="m_value">Enter m-value:</label>
+            <input type="number" name="m_value" min="1" required>
+
+            <label for="t_value">Enter t-value (0.0 - 1.0):</label>
+            <input type="number" name="t_value" step="0.01" min="0" max="1" required>
+
+            <label for="sensitive_columns">Sensitive Columns (comma-separated):</label>
+            <input type="text" name="sensitive_columns" placeholder="e.g., Disease, Age" required>
+
+            <input type="submit" value="Upload and Process">
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
