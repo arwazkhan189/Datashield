@@ -38,13 +38,19 @@ def upload_file():
         # Convert each row into a set of strings
         transactions = df.apply(lambda row: set(row.dropna().astype(str)), axis=1).tolist()
 
-        # Flatten sensitive column values into a set
+        # Check for missing columns
+        missing_columns = [col for col in sensitive_columns if col not in df.columns]
+        if missing_columns:
+            return jsonify({
+                "error": f"The following sensitive columns were not found in the uploaded file: {missing_columns}",
+                "available_columns": df.columns.tolist()
+            }), 400
+
+        # Extract sensitive items
         sensitive_items = set()
         for col in sensitive_columns:
-            if col in df.columns:
-                sensitive_items.update(df[col].dropna().astype(str).tolist())
-            else:
-                print(f"⚠️ Column '{col}' not found in: {df.columns.tolist()}")
+            sensitive_items.update(df[col].dropna().astype(str).tolist())
+
 
         print("🔍 Sensitive Items Extracted:", list(sensitive_items)[:5])
 
